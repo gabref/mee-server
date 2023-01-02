@@ -4,11 +4,13 @@ import { Server } from 'http'
 
 import useMiddlewares from './middlewares'
 import useSocket from './socket'
+import useRoutes from './routes'
 
 const init = (app?: express.Application): Server => {
     if (!app) throw new Error('No Express Server Application, could not start')
 
     useMiddlewares(app)
+    useRoutes(app)
 
     const server = useSocket(app)
 
