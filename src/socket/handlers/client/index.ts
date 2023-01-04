@@ -22,14 +22,24 @@ class ClientHandler implements THandler {
                 Logger.error(`connect_error due to ${err.message}`)
             })
 
-            socket.on(EVENTS.CLIENT.WATCHER, (room) => this.onWatcher(room))
-            socket.on(EVENTS.CLIENT.ANSWER, (id, msg) => this.onAnswer(id, msg))
-            socket.on(EVENTS.CLIENT.CANDIDATE, (id, msg) => this.onCandidate(id, msg))
-            socket.on(EVENTS.CLIENT.END, (room) => this.onEnd(room))
+            socket.on(EVENTS.CLIENT.WATCHER, (payload) => this.onWatcher(payload))
+            socket.on(EVENTS.CLIENT.ANSWER, (payload) => this.onAnswer(payload))
+            socket.on(EVENTS.CLIENT.CANDIDATE, (payload) => this.onCandidate(payload))
+            socket.on(EVENTS.CLIENT.END, (payload) => this.onEnd(payload))
         })
     }
 
-    onWatcher(room: string) {
+    onDisconnect(reason: string) {
+        Logger.info(`user ${this.socket?.id} disconnected - reason: ${reason}`)
+        // users.delete(this.socket!)
+        // this.socket?.to('myRoom').emit('disconnectPeer', this.socket.id)
+        this.io.of(EVENTS.NAMESPACE.ADMIN)
+            // .to('myRoom')
+            .emit(EVENTS.DISCONNECT_PEER,
+                this.socket?.id)
+    }
+
+    onWatcher({ room }: { room: string }) {
         if (!this.socket) return
         // Room.instance.rooms.get(room)
         // const broadcast = { broadcaster: 'admin' }
@@ -39,17 +49,7 @@ class ClientHandler implements THandler {
               this.socket.id)
     }
 
-    onDisconnect(reason: string) {
-        Logger.info(`user ${this.socket?.id} disconnected - reason: ${reason}`)
-        // users.delete(this.socket!)
-        // this.socket?.to('myRoom').emit('disconnectPeer', this.socket.id)
-        this.io.of(EVENTS.NAMESPACE.ADMIN)
-        // .to('myRoom')
-        .emit(EVENTS.DISCONNECT_PEER,
-              this.socket?.id)
-    }
-
-    onAnswer(adminSocketId: string, clientLocalDescription: string) {
+    onAnswer({ adminSocketId, clientLocalDescription }: { adminSocketId: string, clientLocalDescription: string }) {
         if (!this.socket) return
         this.io.of(EVENTS.NAMESPACE.ADMIN)
         .to(adminSocketId)
@@ -58,7 +58,7 @@ class ClientHandler implements THandler {
               clientLocalDescription)
     }
 
-    onCandidate(id: string, message: string) {
+    onCandidate({ id, message }: { id: string, message: string }) {
         if (!this.socket) return
         this.io.of(EVENTS.NAMESPACE.ADMIN)
         .to(id)
@@ -67,7 +67,7 @@ class ClientHandler implements THandler {
               message)
     }
 
-    onEnd(room: string) {
+    onEnd({ room }: { room: string }) {
         // Room.instance.rooms.delete(room)
         // this.io.to(room).emit('end-broadcast')
     }

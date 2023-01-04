@@ -2,6 +2,7 @@ import { Namespace, Server, Socket } from 'socket.io'
 import { EVENTS } from '../../../config/data/events'
 
 import { THandler } from '../../../config/types/customTypes'
+import { Room } from '../../../database/db'
 import { Logger } from '../../../helpers/logger'
 
 class AdminHandler implements THandler {
@@ -11,7 +12,6 @@ class AdminHandler implements THandler {
     constructor(io: Server) {
         this.io = io
         this.socket = null
-        // new Room()
     }
 
     handle(namespace: Namespace) {
@@ -25,9 +25,9 @@ class AdminHandler implements THandler {
             })
 
             socket.on(EVENTS.ADMIN.START, () => this.onStart())
-            socket.on(EVENTS.ADMIN.BRADCASTER, (room, user) => this.onBroadcaster(room, user))
-            socket.on(EVENTS.ADMIN.OFFER, (id, msg) => this.onOffer(id, msg))
-            socket.on(EVENTS.ADMIN.CANDIDATE, (id, msg) => this.onCandidate(id, msg))
+            socket.on(EVENTS.ADMIN.BRADCASTER, (payload) => this.onBroadcaster(payload))
+            socket.on(EVENTS.ADMIN.OFFER, (payload) => this.onOffer(payload))
+            socket.on(EVENTS.ADMIN.CANDIDATE, (payload) => this.onCandidate(payload))
             socket.on(EVENTS.ADMIN.END, () => this.onEnd())
         }) 
     }
@@ -40,7 +40,7 @@ class AdminHandler implements THandler {
         .emit(EVENTS.DISCONNECT_PEER)
     }
 
-    onBroadcaster(room: string, user: string) {
+    onBroadcaster({ room , user }: { room: string, user: string }) {
         if (!this.socket) return
 
         // Room.instance.rooms.set(room, {
@@ -54,7 +54,7 @@ class AdminHandler implements THandler {
         .emit(EVENTS.CLIENT.EMIT.BROADCASTER)
     }
 
-    onOffer(socketClientId: string, adminLocalDescription: string) {
+    onOffer({ socketClientId, adminLocalDescription }: { socketClientId: string, adminLocalDescription: string }) {
         if (!this.socket) return
         this.io.of(EVENTS.NAMESPACE.CLIENT)
             .to(socketClientId)
@@ -63,7 +63,7 @@ class AdminHandler implements THandler {
                   adminLocalDescription)
     }
 
-    onCandidate(id: string, message: string) {
+    onCandidate({ id, message }: { id: string, message: string }) {
         if (!this.socket) return
         this.io.of(EVENTS.NAMESPACE.CLIENT)
         .to(id)
