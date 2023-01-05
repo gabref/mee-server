@@ -1,5 +1,4 @@
 import { Server } from 'http'
-import { setTimeout } from 'timers/promises'
 import { Logger } from '../helpers/logger'
 
 const duration = 2000
@@ -39,7 +38,7 @@ export function onError(error: NodeJS.ErrnoException, server: Server, attempts: 
                 Logger.error('Max attempts to start server')
                 process.exit(1)
             }
-            setTimeout(duration, startServer(server, attempts, port))
+            setTimeout(() => { startServer(server, attempts, port) }, duration)
         default:
             throw error
     }
