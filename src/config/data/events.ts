@@ -10,7 +10,7 @@ const EVENTS = {
     ADMIN: {
         CONNECT_ERROR: 'admin:connect_error',
         START_VIDEO: 'admin:start-video',
-        BRADCASTER: 'admin:broadcaster',
+        BROADCASTER: 'admin:broadcaster',
         OFFER: 'admin:offer',
         CANDIDATE: 'admin:candidate',
         END: 'admin:end',

@@ -25,7 +25,7 @@ class AdminHandler implements THandler {
             })
 
             socket.on(EVENTS.ADMIN.START_VIDEO, () => this.onStart())
-            socket.on(EVENTS.ADMIN.BRADCASTER, (payload) => this.onBroadcaster(payload))
+            socket.on(EVENTS.ADMIN.BROADCASTER, (payload) => this.onBroadcaster(payload))
             socket.on(EVENTS.ADMIN.OFFER, (payload) => this.onOffer(payload))
             socket.on(EVENTS.ADMIN.CANDIDATE, (payload) => this.onCandidate(payload))
             socket.on(EVENTS.ADMIN.END, () => this.onEnd())
