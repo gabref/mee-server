@@ -1,21 +1,22 @@
 import { Namespace } from 'socket.io'
 
 export type TRoom = {
-    broadcaster: string,
-    room: string,
-    user: string,
+    broadcaster: TUser,
+    room: TRoomInfo,
+    user: TUser | null,
+}
+
+export type TRoomInfo = {
+    roomName: string,
+    title: string,
+    preview: string,
+    ready: boolean,
+    available: boolean
 }
 
 export type TUser = {
-    id: string,
+    socketId: string,
     name: string
-}
-
-export type TMessage = {
-    id: string,
-    user: TUser,
-    value: string,
-    time: number
 }
 
 export type THandler = {
