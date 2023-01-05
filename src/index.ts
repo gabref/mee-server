@@ -15,7 +15,7 @@ function main() {
     server.listen(port)
     server.on('error', (err) => onError(err, server, initialAttempts, port))
     server.on('listening', () => onListening(server))
-    server.on('close', () => onClose())
+    // server.on('close', () => onClose())
 
     process.on('uncaughtException', (err) => onProcessError(err, server))
     process.on('unhandledRejection', (reason, promise) => onProcessRejection(reason, promise))
