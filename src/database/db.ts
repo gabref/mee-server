@@ -31,7 +31,11 @@ export class Room {
     }
 
     private static persist (dbPath: string, data: Map<string, TRoom>) {
-        data.forEach(value => value.user = null)
+        data.forEach(value => {
+            value.user = null
+            value.room.available = false,
+            value.room.ready = true
+        })
         writeFileSync(dbPath, Room.mapToJsonString(data))
     }    
 
