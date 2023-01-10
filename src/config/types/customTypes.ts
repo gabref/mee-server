@@ -22,3 +22,10 @@ export type TUser = {
 export type THandler = {
     handle(namespace: Namespace): void
 }
+
+export type TCron = {
+    id: string,
+    cronExpression: string,
+    updatedAt: Date,
+    createdAt: Date
+}

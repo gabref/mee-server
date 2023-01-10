@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io'
 import { EVENTS } from '../../../config/data/events'
-import { Room } from '../../../database/db'
+import { Room } from '../../../repositories/Room'
 
 export default function webrtcEvents (io: Server, socket: Socket) {
 

@@ -1,5 +1,5 @@
 import { TRoom } from "../../config/types/customTypes"
-import { Room } from "../../database/db"
+import { Room } from "../../repositories/Room"
 
 export function getRoomOfSocketId(socketId: string) {
     const values = Room.rooms.values()

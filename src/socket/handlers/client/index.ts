@@ -2,7 +2,7 @@ import { Namespace, Server, Socket } from 'socket.io'
 import { Logger } from '../../../helpers/logger'
 import { THandler, TRoom, TUser } from '../../../config/types/customTypes'
 import { CODE, EVENTS } from '../../../config/data/events'
-import { Room } from '../../../database/db'
+import { Room } from '../../../repositories/Room'
 import webrtcEvents from './clientWebRTCEvents'
 import roomsEvents from './clientRoomEvents'
 

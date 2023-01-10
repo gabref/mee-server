@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io'
 import { CODE, EVENTS } from '../../../config/data/events'
 import { TRoom } from '../../../config/types/customTypes'
-import { Room } from '../../../database/db'
+import { Room } from '../../../repositories/Room'
 import { Logger } from '../../../helpers/logger'
 import { getAllRooms, getRoomOfSocketId } from '../utils'
 
