@@ -4,6 +4,7 @@ import { TRoom } from '../../../config/types/customTypes'
 import { Room } from '../../../repositories/Room'
 import { Logger } from '../../../helpers/logger'
 import { getAllRooms, getRoomOfSocketId } from '../utils'
+import { v4 as uuid } from 'uuid'
 
 export default function roomsEvents (io: Server, socket: Socket) {
 
@@ -60,16 +61,9 @@ export default function roomsEvents (io: Server, socket: Socket) {
 
     function onJoin({ room }: { room: TRoom }, callback: Function) {
 
-        // generate a unique token
-        // const token = uuid.v4()
-        // calculate the expiration time (30 minutes from the current time)
-        // const expirationTime = new Date().getDate() + 1000 * 60 * 30
-        // save the token and expiration time in the backend (e.g. in a database)
-        // saveToken(token, expirationTime)
-        // send the token and expiration time back to the fronend
-        // socket.emit('token', { token, expirationTime })
-
         if (!socket) return callback(CODE.SOCKET.DOESNT_EXISTS)
+        // check if user has beign sent
+        if (!room.user) return callback(CODE.ROOM.NO_USER)
         // check if room exists
         const _room = Room.rooms.get(room.room.roomName)
         if (!_room)
@@ -79,7 +73,17 @@ export default function roomsEvents (io: Server, socket: Socket) {
             return callback(CODE.ROOM.NOT_EMPTY)
         // update and join room
         Logger.info(`user ${socket.id} is joining room ${room.room.roomName}`)
-        Room.rooms.set(room.room.roomName, room)
+
+        // update the room user and joined time
+        Room.rooms.set(room.room.roomName, {
+            broadcaster: room.broadcaster,
+            room: room.room,
+            user: {
+                name: room.user.name,
+                socketId: room.user.socketId,
+                expirationTime: new Date().getTime() + 1000 * 60 * 30
+            }
+        })
         socket.join(room.room.roomName)
         return callback(CODE.ROOM.OK)
     }

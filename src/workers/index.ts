@@ -39,7 +39,7 @@ export function initWorkers(io: Server) {
     const cronsService = new CronsService()
     cronsService.create({ name: 'user-room-timeout', value: {
         id: uuid(),
-        cronExpression: '*/30 * * * * *',
+        cronExpression: '*/15 * * * * *',
         updatedAt: new Date(),
         createdAt: new Date()
     } })
