@@ -59,6 +59,16 @@ export default function roomsEvents (io: Server, socket: Socket) {
     }
 
     function onJoin({ room }: { room: TRoom }, callback: Function) {
+
+        // generate a unique token
+        // const token = uuid.v4()
+        // calculate the expiration time (30 minutes from the current time)
+        // const expirationTime = new Date().getDate() + 1000 * 60 * 30
+        // save the token and expiration time in the backend (e.g. in a database)
+        // saveToken(token, expirationTime)
+        // send the token and expiration time back to the fronend
+        // socket.emit('token', { token, expirationTime })
+
         if (!socket) return callback(CODE.SOCKET.DOESNT_EXISTS)
         // check if room exists
         const _room = Room.rooms.get(room.room.roomName)
