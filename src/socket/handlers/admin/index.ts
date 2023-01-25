@@ -8,16 +8,13 @@ import webrtcEvents from './adminWebRTCEvents'
 
 class AdminHandler implements THandler {
     private io: Server
-    private socket: Socket | null
 
     constructor(io: Server) {
         this.io = io
-        this.socket = null
     }
 
     handle(namespace: Namespace) {
         namespace.on('connection', (socket) => {
-            this.socket = socket
             Logger.info(`admin ${socket.id} connected`)
 
             updateRooms(socket.id)
