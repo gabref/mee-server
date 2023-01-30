@@ -3,7 +3,7 @@ import { CODE, EVENTS } from '../../../config/data/events'
 import { TRoom } from '../../../config/types/customTypes'
 import { Room } from '../../../repositories/Room'
 import { Logger } from '../../../helpers/logger'
-import { getAllRooms, getRoomOfSocketId } from '../utils'
+import { getAllRooms, getRoomOfSocketId, getRoomOfUserId } from '../utils'
 import { v4 as uuid } from 'uuid'
 
 export default function roomsEvents (io: Server, socket: Socket) {
@@ -71,6 +71,10 @@ export default function roomsEvents (io: Server, socket: Socket) {
         // check if room not empty
         if (_room.user)
             return callback(CODE.ROOM.NOT_EMPTY)
+        // check if user already in other room
+        const roomUserIn = getRoomOfUserId(room.user.id)
+        if (roomUserIn.room)
+            return callback(CODE.USER.ALREADY_IN_ROOM)
         // update and join room
         Logger.info(`user ${socket.id} is joining room ${room.room.roomName}`)
 
@@ -81,6 +85,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
             user: {
                 name: room.user.name,
                 socketId: room.user.socketId,
+                id: room.user.id,
                 expirationTime: new Date().getTime() + 1000 * 60 * 30
             }
         })

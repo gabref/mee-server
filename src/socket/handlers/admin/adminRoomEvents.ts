@@ -83,7 +83,8 @@ export default function roomsEvents (io: Server, socket: Socket) {
         Room.rooms.set(room.room.roomName, {
             broadcaster: {
                 name: room.broadcaster.name,
-                socketId: room.broadcaster.socketId
+                socketId: room.broadcaster.socketId,
+                id: room.broadcaster.id
             },
             room: {
                 roomName: room.room.roomName,

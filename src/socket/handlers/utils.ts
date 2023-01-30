@@ -10,6 +10,15 @@ export function getRoomOfSocketId(socketId: string) {
     return { room: null }
 }
 
+export function getRoomOfUserId(userId: string) {
+    const values = Room.rooms.values()
+    for (let value of values) {
+        if (userId == value.user?.id)
+            return { room: value }
+    }
+    return { room: null }
+}
+
 export function getAllRooms() {
     const roomsArray: TRoom[] = []
     const rooms = Room.rooms.values()
@@ -30,7 +39,8 @@ export function updateRooms(adminSocketId: string) {
             user: null,
             broadcaster: {
                 name: 'default',
-                socketId: adminSocketId
+                socketId: adminSocketId,
+                id: 'default'
             }
         }) 
     })
