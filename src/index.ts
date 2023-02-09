@@ -4,11 +4,11 @@ import express from 'express'
 import init from './config/initializers'
 import { normalizePort, onError, onProcessError, onProcessRejection, onListening, onClose, gracefulShutdown } from './utils/serverInits'
 
-const { PORT } = process.env
+const PORT = process.env.PORT
 const initialAttempts = 1
 
 function main() {
-    let port = normalizePort(PORT || '3000')
+    let port = normalizePort(PORT || '8080')
 
     const server: Server = init(express())
 
