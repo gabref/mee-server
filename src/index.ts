@@ -4,7 +4,7 @@ import express from 'express'
 import init from './config/initializers'
 import { normalizePort, onError, onProcessError, onProcessRejection, onListening, onClose, gracefulShutdown } from './utils/serverInits'
 
-const PORT = process.env.PORT
+const { PORT } = process.env
 const initialAttempts = 1
 
 function main() {
