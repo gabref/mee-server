@@ -23,7 +23,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
                 preview: room.room.preview,
                 title: room.room.title,
                 ready: true,
-                available: true,
+                available: !room.user?.kicked,
             },
             user: null
         })
@@ -86,6 +86,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
                 name: room.user.name,
                 socketId: room.user.socketId,
                 id: room.user.id,
+                kicked: room.user.kicked,
                 expirationTime: new Date().getTime() + 1000 * 60 * 30
             }
         })

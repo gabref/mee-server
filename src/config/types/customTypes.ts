@@ -1,7 +1,7 @@
 import { Namespace } from 'socket.io'
 
 export type TRoom = {
-    broadcaster: Omit<TUser, 'expirationTime'>,
+    broadcaster: Omit<TUser, 'expirationTime' | 'kicked' >,
     room: TRoomInfo,
     user: TUser | null,
 }
@@ -18,6 +18,7 @@ export type TUser = {
     socketId: string,
     name: string,
     id: string,
+    kicked: boolean,
     expirationTime: number
 }
 
