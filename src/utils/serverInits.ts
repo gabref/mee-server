@@ -38,7 +38,7 @@ export function onError(error: NodeJS.ErrnoException, server: Server, attempts: 
                 Logger.error('Max attempts to start server')
                 process.exit(1)
             }
-            setTimeout(() => { startServer(server, attempts, port) }, duration)
+            // setTimeout(() => { startServer(server, attempts, port) }, duration)
         default:
             throw error
     }
