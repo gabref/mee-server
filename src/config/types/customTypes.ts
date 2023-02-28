@@ -22,6 +22,19 @@ export type TUser = {
     expirationTime: number
 }
 
+export type TDBUser = {
+    doc: string,
+    name: string,
+    businessName: string,
+    phoneNumber: string
+    email: string,
+    roles: string[]
+}
+
+export type TJwtPayload = {
+    id: string,
+}
+
 export type THandler = {
     handle(namespace: Namespace): void
 }
