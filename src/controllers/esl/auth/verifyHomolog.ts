@@ -23,11 +23,10 @@ export async function handleHomologVerification(req: Request, res: Response) {
             expDate: expDate.toString(),
             expIsoDate: expDate.toISOString(),
             expDay: expDate.getDate(),
-            expMonth: expDate.getMonth(),
+            expMonth: expDate.getMonth() + 1,
             expYear: expDate.getFullYear(),
             expHour: expDate.getHours(),
             expMinutes: expDate.getMinutes(),
-            expSeconds: expDate.getSeconds(),
         })
 
     } catch(err) { console.log(err); handleErrors(err, res) }
