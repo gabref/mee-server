@@ -10,7 +10,8 @@ export async function handleHomologVerification(req: Request, res: Response) {
         const { success: isAuth, exp } = await ensureAuth(req.headers.authorization!)
         if (!isAuth) throw new ApiError(403, 'Not Authenticated')
 
-        const expDate = new Date(new Date(exp * 1000).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }))
+        const expDate = new Date(exp * 1000).toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' })
+        const brDate = new Date(expDate)
 
         res.status(200).json({
             clientId: process.env.HANSHOW_CLIENT_ID!,
@@ -22,17 +23,17 @@ export async function handleHomologVerification(req: Request, res: Response) {
             storeCode: process.env.HANSHOW_STORE_CODE!,
             expInSeconds: exp, 
             expInMilliseconds: exp * 1000,
-            expDate: expDate.toString(),
-            expIsoDate: expDate.toISOString(),
-            expLocaleDate: expDate.toLocaleTimeString(),
-            expLocaleTime: expDate.toLocaleTimeString(),
-            expDay: expDate.getDate(),
-            expMonth: expDate.getDate(),
-            expYear: expDate.getFullYear(),
-            expHour: expDate.getHours(),
-            expMinutes: expDate.getMinutes(),
-            expSeconds: expDate.getSeconds(),
+            expDate: brDate.toString(),
+            expIsoDate: brDate.toISOString(),
+            expLocaleDate: brDate.toLocaleTimeString(),
+            expLocaleTime: brDate.toLocaleTimeString(),
+            expDay: brDate.getDate(),
+            expMonth: brDate.getMonth(),
+            expYear: brDate.getFullYear(),
+            expHour: brDate.getHours(),
+            expMinutes: brDate.getMinutes(),
+            expSeconds: brDate.getSeconds(),
         })
 
-    } catch(err) { handleErrors(err, res) }
+    } catch(err) { console.log(err); handleErrors(err, res) }
 }
