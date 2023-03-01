@@ -8,6 +8,8 @@ async function ensureAuth(authorization: string) {
 
     const [, token] = authorization.split(' ')
 
+    if (!token) throw new ApiError(403, 'Token is missing')
+
     const verifyReturn = verify(token, process.env.JWT_ESL_PASS ?? '') as unknown //as { id: string, exp: string }
     const { id, exp } = verifyReturn as { id: string, exp: number }
     
