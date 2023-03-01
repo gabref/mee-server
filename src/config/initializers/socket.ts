@@ -1,13 +1,13 @@
 import * as http from 'http'
 import { Application } from 'express'
-import { Server } from 'socket.io'
+import { Server, ServerOptions } from 'socket.io'
 
 import SocketListener from '../../../src/socket'
 
-const options = {
+const options: Partial<ServerOptions> = {
     serveClient: false,
-    pingInterval: 10000,
-    pingTimeout: 5000,
+    pingInterval: 30000,
+    pingTimeout: 50000,
     cookie: false,
     cors: {
         origin: '*',
