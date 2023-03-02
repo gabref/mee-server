@@ -1,6 +1,5 @@
 import { Server } from "socket.io"
 import { EVENTS } from "../../config/data/events"
-import { Logger } from "../../helpers/logger"
 import { Room } from "../../repositories/Room"
 
 export default (io: Server): void => {

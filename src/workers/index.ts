@@ -6,6 +6,7 @@ import { CronsService } from '../services/crons'
 import userRoomTimeout from './userRoomTimeout'
 import { v4 as uuid } from 'uuid'
 import { Server } from 'socket.io'
+import handleBroadcasterDisconnect from './handleBroadcasterDisconnect'
 
 type TWorkers = {
     cron?: TCron,
@@ -18,6 +19,10 @@ async function getWorkers(io: Server): Promise<TWorkers[]> {
         {
             cron: cronsService.getByValue('user-room-timeout'),
             run: () => userRoomTimeout(io)
+        },
+        {
+            cron: cronsService.getByValue('broadcaster-disconnect'),
+            run: () => handleBroadcasterDisconnect(io)
         }
     ]
 }
@@ -43,5 +48,12 @@ export function initWorkers(io: Server) {
         updatedAt: new Date(),
         createdAt: new Date()
     } })
+    cronsService.create({ name: 'broadcaster-disconnect', value: {
+        id: uuid(),
+        cronExpression: '*/1 * * * *',
+        updatedAt: new Date(),
+        createdAt: new Date()
+    }})
+
     runWorkers(io)
 }

@@ -1,9 +1,9 @@
 import { Server, Socket } from 'socket.io'
 import { CODE, EVENTS } from '../../../config/data/events'
-import { TRoom } from '../../../config/types/customTypes'
+import { TBroadcaster, TRoom, TUser } from '../../../config/types/customTypes'
 import { Room } from '../../../repositories/Room'
 import { Logger } from '../../../helpers/logger'
-import { deleteSpecificRooms, getAllRooms, getRoomOfSocketId, getRoomsOfBroadcaster } from '../utils'
+import { deleteSpecificRooms, getAllRooms, getRoomOfSocketId, getRoomsOfBroadcasterByBroadcasterId, getRoomsOfBroadcasterBySocketId } from '../utils'
 
 export default function roomsEvents (io: Server, socket: Socket) {
 
@@ -11,8 +11,26 @@ export default function roomsEvents (io: Server, socket: Socket) {
         if (!socket) return
 
         Logger.info(`admin ${socket?.id} disconnected - reason: ${reason}`)
-        const _rooms = getRoomsOfBroadcaster(socket.id)
-        if (!_rooms) return
+
+        // get rooms of socket id
+        const roomsOfBroadcaster = getRoomsOfBroadcasterBySocketId(socket.id)
+        for (const roomName of roomsOfBroadcaster) {
+            const room = Room.rooms.get(roomName)
+            if (!room) continue
+            Room.rooms.set(roomName, {
+                ...room,
+                broadcaster: {
+                    ...room.broadcaster,
+                    disconnectionTime: Date.now()
+                }
+            })
+        }
+    }
+
+    function onExit(broadcasterId: string) {
+        // const _rooms = getRoomsOfBroadcasterBySocketId(socket.id)
+        const _rooms = getRoomsOfBroadcasterByBroadcasterId(broadcasterId)
+        if (_rooms.length === 0) return
 
         deleteSpecificRooms(_rooms)
 
@@ -25,8 +43,29 @@ export default function roomsEvents (io: Server, socket: Socket) {
         .emit(EVENTS.ADMIN.UPDATE_DESCRIPTION_IMAGE, {
             rooms: roomsArray
         })
+
     }
 
+    function onConnect(broadcasterUser: TBroadcaster) {
+        const { id, socketId } = broadcasterUser
+        const broadcasterRooms = getRoomsOfBroadcasterByBroadcasterId(id)
+        if (broadcasterRooms.length === 0) return
+
+        // update the socketId of broadcaster in rooms
+        for (const roomName of broadcasterRooms) {
+            const room = Room.rooms.get(roomName)
+            if (room) {
+                Room.rooms.set(roomName, {
+                    ...room,
+                    broadcaster: {
+                        ...room.broadcaster,
+                        socketId: socketId,
+                        disconnectionTime: undefined
+                    }
+                })
+            }
+        }
+    }
 
     function onEnd(roomName: string) {
         // kick user on session
@@ -59,7 +98,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
 
     function onGetRooms({ adminSocketId }: { adminSocketId: string }, callback: Function) {
         const roomsArrayB: TRoom[] = []
-        const roomsNames = getRoomsOfBroadcaster(adminSocketId)
+        const roomsNames = getRoomsOfBroadcasterBySocketId(adminSocketId)
         roomsNames.forEach((roomName) => {
             const room = Room.rooms.get(roomName)
             if (room) roomsArrayB.push(room)
@@ -138,6 +177,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
             }
         })
         socket?.emit(EVENTS.ADMIN.UNREADY, { room: Room.rooms.get(room.room.roomName) })
+        onEnd(roomName)
     }
 
     function onToggleAvailable({ availableRoom }: { availableRoom : TRoom }, callback: Function) {
@@ -170,6 +210,8 @@ export default function roomsEvents (io: Server, socket: Socket) {
         Logger.error(`connect_error due to ${err.message}`)
     })
 
+    socket.on(EVENTS.ADMIN.CONNECT, onConnect)
+    socket.on(EVENTS.ADMIN.EXIT, onExit)
     socket.on(EVENTS.ADMIN.END, onEnd)
 
     socket.on(EVENTS.ADMIN.CREATE_ROOM, onCreateRoom)

@@ -46,10 +46,19 @@ export function updateRooms(adminSocketId: string) {
     })
 }
 
-export function getRoomsOfBroadcaster(id: string) {
+export function getRoomsOfBroadcasterBySocketId(id: string) {
     const broadcasterRooms: string[] = []
     Room.rooms.forEach((value) => {
         if (id === value.broadcaster.socketId)
+            broadcasterRooms.push(value.room.roomName)
+    })
+    return broadcasterRooms
+}
+
+export function getRoomsOfBroadcasterByBroadcasterId(id: string) {
+    const broadcasterRooms: string[] = []
+    Room.rooms.forEach((value) => {
+        if (id === value.broadcaster.id)
             broadcasterRooms.push(value.room.roomName)
     })
     return broadcasterRooms
