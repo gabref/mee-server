@@ -14,6 +14,9 @@ export default function roomsEvents (io: Server, socket: Socket) {
 
         const { room } = getRoomOfSocketId(socket.id)
 
+        console.log('user disconnecting, room of socket id')
+        if (!room) console.log('no room with user', Room.rooms)
+
         if(!room) return Logger.error(`Couldn\'t delete socket from room: ${socket.id}`)
 
         Room.rooms.set(room.room.roomName, {
@@ -43,6 +46,8 @@ export default function roomsEvents (io: Server, socket: Socket) {
         socket.broadcast.emit(EVENTS.CLIENT.UNJOINED, {
             rooms: roomsArray
         })
+
+        console.log('rooms after user exit', roomsArray)
     }
 
     function onEnd( room: string ) {
@@ -106,6 +111,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
             rooms: roomsArray
         })
         Logger.info(`user ${socket?.id} has joined room ${room?.room.roomName}`)
+        console.log('user joined', room)
     }
 
     socket.on(EVENTS.DISCONNECT, onDisconnect)

@@ -20,6 +20,7 @@ export default function webrtcEvents (io: Server, socket: Socket) {
 
     // after onWatcher
     function onOffer( socketClientId: string, adminLocalDescription: string ) {
+        console.log('on offer', socketClientId, adminLocalDescription)
         if (!socket) return
         io.of(EVENTS.NAMESPACE.CLIENT)
             .to(socketClientId)
@@ -28,6 +29,7 @@ export default function webrtcEvents (io: Server, socket: Socket) {
 
     // after onWatcher
     function onCandidate( clientSocketId: string, eventCandidate: string ) {
+        console.log('on candidate', clientSocketId, eventCandidate)
         if (!socket) return
         io.of(EVENTS.NAMESPACE.CLIENT)
         .to(clientSocketId)

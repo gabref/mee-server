@@ -32,18 +32,26 @@ export function getAllRooms() {
  * update rooms variable to saved config in file
  */
 export function updateRooms(adminSocketId: string) {
-    const fileRooms = Room.read()
+    let fileRooms: Map<string, TRoom>
+    if (!Room.rooms.size) fileRooms = Room.read()
+    else fileRooms = Room.rooms
+
     fileRooms.forEach((value, key) => { 
         Room.rooms.set(key, {
-            room: value.room,
-            user: null,
+            room: {
+                ...value.room,
+                available: false
+            },
+            user: value.user,
             broadcaster: {
-                name: 'default',
+                ...value.broadcaster,
                 socketId: adminSocketId,
-                id: 'default'
+                disconnectionTime: undefined
             }
         }) 
     })
+
+    console.log('admin connected', Room.rooms)
 }
 
 export function getRoomsOfBroadcasterBySocketId(id: string) {
@@ -57,7 +65,9 @@ export function getRoomsOfBroadcasterBySocketId(id: string) {
 
 export function getRoomsOfBroadcasterByBroadcasterId(id: string) {
     const broadcasterRooms: string[] = []
+    console.log(Room.rooms)
     Room.rooms.forEach((value) => {
+        console.log('value ', value.broadcaster.id)
         if (id === value.broadcaster.id)
             broadcasterRooms.push(value.room.roomName)
     })
