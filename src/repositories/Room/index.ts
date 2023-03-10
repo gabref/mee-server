@@ -34,7 +34,7 @@ export class Room {
         data.forEach(value => {
             value.user = null
             value.room.available = false,
-            value.room.ready = true
+            value.room.ready = false
         })
         writeFileSync(dbPath, Room.mapToJsonString(data))
     }    

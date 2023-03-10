@@ -46,9 +46,9 @@ export default function roomsEvents (io: Server, socket: Socket) {
 
     }
 
-    function onConnect(broadcasterUser: TBroadcaster) {
+    function onConnect(broadcasterUser: TBroadcaster & { reRendered: boolean }) {
         console.log('on connect', broadcasterUser)
-        const { id, socketId } = broadcasterUser
+        const { id, socketId, reRendered } = broadcasterUser
         const broadcasterRooms = getRoomsOfBroadcasterByBroadcasterId(id)
         console.log('broadcaster rooms', broadcasterRooms)
         if (broadcasterRooms.length === 0) return
@@ -59,6 +59,10 @@ export default function roomsEvents (io: Server, socket: Socket) {
             if (room) {
                 Room.rooms.set(roomName, {
                     ...room,
+                    room: {
+                        ...room.room,
+                        available: reRendered ? false : !!!room.user
+                    },
                     broadcaster: {
                         ...room.broadcaster,
                         socketId: socketId,

@@ -36,11 +36,11 @@ export function updateRooms(adminSocketId: string) {
     if (!Room.rooms.size) fileRooms = Room.read()
     else fileRooms = Room.rooms
 
-    fileRooms.forEach((value, key) => { 
+    fileRooms.forEach((value, key) => {
         Room.rooms.set(key, {
             room: {
                 ...value.room,
-                available: false
+                available: value.room.ready && !value.user
             },
             user: value.user,
             broadcaster: {

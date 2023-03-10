@@ -4,17 +4,23 @@ import { TRoom } from '../../../config/types/customTypes'
 import { Room } from '../../../repositories/Room'
 import { Logger } from '../../../helpers/logger'
 import { getAllRooms, getRoomOfSocketId, getRoomOfUserId } from '../utils'
-import { v4 as uuid } from 'uuid'
 
 export default function roomsEvents (io: Server, socket: Socket) {
 
     function onDisconnect(reason: string) {
         if (!socket) return
         Logger.info(`user ${socket.id} disconnected - reason: ${reason}`)
+    }
 
-        const { room } = getRoomOfSocketId(socket.id)
+    function onEnd(userId: string) {
+        console.log('userId', userId)
 
-        console.log('user disconnecting, room of socket id')
+        if (!socket) return
+        Logger.info(`user ${socket.id} ended session`)
+
+        const { room } = getRoomOfUserId(userId)
+
+        console.log('user disconnecting, room of user id')
         if (!room) console.log('no room with user', Room.rooms)
 
         if(!room) return Logger.error(`Couldn\'t delete socket from room: ${socket.id}`)
@@ -48,11 +54,6 @@ export default function roomsEvents (io: Server, socket: Socket) {
         })
 
         console.log('rooms after user exit', roomsArray)
-    }
-
-    function onEnd( room: string ) {
-        // Room.instance.rooms.delete(room)
-        // io.to(room).emit('end-broadcast')
     }
 
     function onGetRooms(callback: Function) {
