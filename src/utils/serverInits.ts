@@ -55,10 +55,10 @@ export function onProcessError(error: NodeJS.ErrnoException, server: Server) {
 }
 
 export function onProcessRejection(reason: any, promise: any) {
-    console.log('Unhadled Rejection')
-    console.log(reason)
-    console.log('------------------------')
-    console.log(promise)
+    Logger.error('Unhadled Rejection')
+    Logger.error(reason)
+    Logger.error('------------------------')
+    Logger.error(promise)
 }
 
 /**

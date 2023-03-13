@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { ApiError } from '../../../config/types/error'
+import { Logger } from '../../../helpers/logger'
 import { ensureAuth } from '../../../services/auth/verifyAuth'
 import { handleErrors } from '../../../services/errors'
 
@@ -29,5 +30,5 @@ export async function handleHomologVerification(req: Request, res: Response) {
             expMinutes: expDate.getMinutes(),
         })
 
-    } catch(err) { console.log(err); handleErrors(err, res) }
+    } catch(err) { Logger.debug(err); handleErrors(err, res) }
 }

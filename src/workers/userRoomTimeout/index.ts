@@ -1,11 +1,12 @@
 import { Server } from "socket.io"
 import { EVENTS } from "../../config/data/events"
 import { TRoom } from "../../config/types/customTypes"
+import { Logger } from "../../helpers/logger"
 import { Room } from "../../repositories/Room"
 import { getAllRooms } from "../../socket/handlers/utils"
 
 export default (io: Server): void => {
-    console.log('worker user room time out')
+    Logger.debug('worker user room time out')
 
     try {
 
@@ -26,13 +27,13 @@ export default (io: Server): void => {
         const expiredRooms = roomsList.filter(room => room.expirationTime < new Date().getTime())
         const expiredClientIds: string[] = expiredRooms.map(room => room.clientId)
     
-        console.log(roomsList[0].expirationTime < new Date().getTime())
-        console.log('expiration time', roomsList[0].expirationTime)
-        console.log('now time', Date.now())
-        console.log('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000), 'sec')
-        console.log('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000 * 60), 'min')
-        console.log('expired Rooms', expiredRooms)
-        console.log('expired clients', expiredClientIds)
+        Logger.debug(roomsList[0].expirationTime < new Date().getTime())
+        Logger.debug('expiration time', roomsList[0].expirationTime)
+        Logger.debug('now time', Date.now())
+        Logger.debug('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000), 'sec')
+        Logger.debug('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000 * 60), 'min')
+        Logger.debug('expired Rooms', expiredRooms)
+        Logger.debug('expired clients', expiredClientIds)
     
         // disconnect the sockets associated with the expired tokens
         if (expiredClientIds.length > 0)

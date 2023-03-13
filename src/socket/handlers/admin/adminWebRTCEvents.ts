@@ -1,5 +1,6 @@
 import { Server, Socket } from 'socket.io'
 import { EVENTS } from '../../../config/data/events'
+import { Logger } from '../../../helpers/logger'
 import { Room } from '../../../repositories/Room'
 
 export default function webrtcEvents (io: Server, socket: Socket) {
@@ -20,7 +21,7 @@ export default function webrtcEvents (io: Server, socket: Socket) {
 
     // after onWatcher
     function onOffer( socketClientId: string, adminLocalDescription: string ) {
-        console.log('on offer', socketClientId, adminLocalDescription)
+        Logger.debug('on offer', socketClientId, adminLocalDescription)
         if (!socket) return
         io.of(EVENTS.NAMESPACE.CLIENT)
             .to(socketClientId)
@@ -29,7 +30,7 @@ export default function webrtcEvents (io: Server, socket: Socket) {
 
     // after onWatcher
     function onCandidate( clientSocketId: string, eventCandidate: string ) {
-        console.log('on candidate', clientSocketId, eventCandidate)
+        Logger.debug('on candidate', clientSocketId, eventCandidate)
         if (!socket) return
         io.of(EVENTS.NAMESPACE.CLIENT)
         .to(clientSocketId)

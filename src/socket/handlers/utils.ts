@@ -1,4 +1,5 @@
 import { TRoom } from "../../config/types/customTypes"
+import { Logger } from "../../helpers/logger"
 import { Room } from "../../repositories/Room"
 
 export function getRoomOfSocketId(socketId: string) {
@@ -51,7 +52,7 @@ export function updateRooms(adminSocketId: string) {
         }) 
     })
 
-    console.log('admin connected', Room.rooms)
+    Logger.debug('admin connected', Room.rooms)
 }
 
 export function getRoomsOfBroadcasterBySocketId(id: string) {
@@ -65,9 +66,8 @@ export function getRoomsOfBroadcasterBySocketId(id: string) {
 
 export function getRoomsOfBroadcasterByBroadcasterId(id: string) {
     const broadcasterRooms: string[] = []
-    console.log(Room.rooms)
     Room.rooms.forEach((value) => {
-        console.log('value ', value.broadcaster.id)
+        Logger.debug('value ', value.broadcaster.id)
         if (id === value.broadcaster.id)
             broadcasterRooms.push(value.room.roomName)
     })

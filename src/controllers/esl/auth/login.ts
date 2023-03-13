@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { sign } from 'jsonwebtoken'
 import { ApiError } from '../../../config/types/error'
+import { Logger } from '../../../helpers/logger'
 import { handleErrors } from '../../../services/errors'
 import { findUserByDoc } from '../../../services/user'
 import { dateAdd } from '../../../utils/dates'
@@ -21,5 +22,5 @@ export async function handleEslLogin( req: Request, res: Response ) {
     
         return res.status(200).json({ token: token })
 
-    } catch(err) { console.log(err); handleErrors(err, res) }
+    } catch(err) { Logger.debug(err); handleErrors(err, res) }
 }

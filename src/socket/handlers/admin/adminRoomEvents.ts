@@ -47,10 +47,10 @@ export default function roomsEvents (io: Server, socket: Socket) {
     }
 
     function onConnect(broadcasterUser: TBroadcaster & { reRendered: boolean }) {
-        console.log('on connect', broadcasterUser)
+        Logger.debug('on connect', broadcasterUser)
         const { id, socketId, reRendered } = broadcasterUser
         const broadcasterRooms = getRoomsOfBroadcasterByBroadcasterId(id)
-        console.log('broadcaster rooms', broadcasterRooms)
+        Logger.debug('broadcaster rooms', broadcasterRooms)
         if (broadcasterRooms.length === 0) return
 
         // update the socketId of broadcaster in rooms
