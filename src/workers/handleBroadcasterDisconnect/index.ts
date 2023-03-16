@@ -27,6 +27,8 @@ export default (io: Server): void => {
 
     deleteSpecificRooms(expiredRooms)
 
+    console.log('worker admin disconnect: expired Rooms', expiredRooms)
+
     // disconnect the connected clients
     io.of(EVENTS.NAMESPACE.CLIENT)
     .to(expiredRooms)

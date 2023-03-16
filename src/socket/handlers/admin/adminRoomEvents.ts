@@ -34,6 +34,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
 
         deleteSpecificRooms(_rooms)
 
+        console.log('admin on exit, deletin rooms: ', _rooms)
         io.of(EVENTS.NAMESPACE.CLIENT)
         .to(_rooms)
         .emit(EVENTS.DISCONNECT_PEER)
