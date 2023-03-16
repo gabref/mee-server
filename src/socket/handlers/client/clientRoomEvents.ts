@@ -47,6 +47,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
                 id: socket.id,
                 roomName: room.room.roomName
             })
+        console.log('on end called on user ', socket.id)
         // to client new list of rooms
         const roomsArray = getAllRooms()
         socket.broadcast.emit(EVENTS.CLIENT.UNJOINED, {
@@ -93,7 +94,7 @@ export default function roomsEvents (io: Server, socket: Socket) {
                 socketId: room.user.socketId,
                 id: room.user.id,
                 kicked: room.user.kicked,
-                expirationTime: new Date().getTime() + 1000 * 60 * 30
+                expirationTime: Date.now() + 1000 * 60 * 30
             }
         })
         socket.join(room.room.roomName)

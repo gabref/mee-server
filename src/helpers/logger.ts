@@ -24,7 +24,7 @@ const levels = {
 }
 
 const Logger = pino({
-    level: process.env.PINO_LOG_LEVEL || 'info',
+    level: process.env.PINO_LOG_LEVEL || 'debug',
     transport: {
         target: 'pino-pretty'
     },

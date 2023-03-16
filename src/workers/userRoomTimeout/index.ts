@@ -24,10 +24,10 @@ export default (io: Server): void => {
     
         // filter the list to only include tokens that have expired
         if (!roomsList.length) return
-        const expiredRooms = roomsList.filter(room => room.expirationTime < new Date().getTime())
+        const expiredRooms = roomsList.filter(room => room.expirationTime < Date.now())
         const expiredClientIds: string[] = expiredRooms.map(room => room.clientId)
     
-        Logger.debug(roomsList[0].expirationTime < new Date().getTime())
+        Logger.debug(roomsList[0].expirationTime < Date.now())
         Logger.debug('expiration time', roomsList[0].expirationTime)
         Logger.debug('now time', Date.now())
         Logger.debug('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000), 'sec')
@@ -61,6 +61,7 @@ export default (io: Server): void => {
                             id: room.room.user?.socketId,
                             roomName: room.room.room.roomName
                         })
+                    console.log('disconnecting userRoomTimeout', room.room.room.roomName, room.room.user?.socketId)
                     // to client new list of rooms
                     const roomsArray = getAllRooms()
                     io.of(EVENTS.NAMESPACE.CLIENT)

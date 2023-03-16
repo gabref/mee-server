@@ -6,8 +6,8 @@ import SocketListener from '../../../src/socket'
 
 const options: Partial<ServerOptions> = {
     serveClient: false,
-    pingInterval: 30000,
-    pingTimeout: 50000,
+    // pingInterval: 30000,
+    // pingTimeout: 50000,
     cookie: false,
     cors: {
         origin: '*',
