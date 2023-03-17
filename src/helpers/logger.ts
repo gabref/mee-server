@@ -4,13 +4,13 @@ import dayjs from 'dayjs'
 import path from 'path'
 import fs from 'fs'
 
-const logFile = path.join(__dirname, '..', '..', 'logs', 'mee-server.log')
-const fileStream = fs.createWriteStream(logFile, { flags: 'a' })
+// const logFile = path.join(__dirname, '..', '..', 'logs', 'mee-server.log')
+// const fileStream = fs.createWriteStream(logFile, { flags: 'a' })
 
-const streams = [
-    { stream: process.stdout },
-    { stream: pino.destination(logFile) }
-]
+// const streams = [
+//     { stream: process.stdout },
+//     { stream: pino.destination(logFile) }
+// ]
 
 const levels = {
   emerg: 80,
