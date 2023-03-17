@@ -50,7 +50,8 @@ export function initWorkers(io: Server) {
     } })
     cronsService.create({ name: 'broadcaster-disconnect', value: {
         id: uuid(),
-        cronExpression: '*/1 * * * *',
+        // cronExpression: '*/1 * * * *',
+        cronExpression: '*/10 * * * * *',
         updatedAt: new Date(),
         createdAt: new Date()
     }})
