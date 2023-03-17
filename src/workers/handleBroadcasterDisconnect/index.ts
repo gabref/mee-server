@@ -21,7 +21,7 @@ export default (io: Server): void => {
         const expiredBroadcasters = broadcasters.filter((b) => {
             const currentTime = Date.now()
             const timeDiffInMinutes = (currentTime - b.disconnectionTime) / 60 * 1000
-            return timeDiffInMinutes >= 1
+            return timeDiffInMinutes >= 2
         })
 
         const expiredRooms = expiredBroadcasters.map(e => e.roomName)

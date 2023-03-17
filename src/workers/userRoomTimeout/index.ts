@@ -36,6 +36,7 @@ export default (io: Server): void => {
         Logger.debug('expiration DIFFERENCE: ', (roomsList[0].expirationTime - Date.now())/(1000 * 60), 'min')
         Logger.debug('expired Rooms', expiredRooms)
         Logger.debug('expired clients', expiredClientIds)
+        Logger.debug('size of expired clients', expiredClientIds.length)
     
         // disconnect the sockets associated with the expired tokens
         if (expiredClientIds.length > 0)
