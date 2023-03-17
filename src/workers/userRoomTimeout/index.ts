@@ -7,7 +7,6 @@ import { getAllRooms } from "../../socket/handlers/utils"
 
 export default (io: Server): void => {
     Logger.debug('worker user room time out')
-    console.log('worker user room time out')
 
     try {
 
@@ -27,6 +26,8 @@ export default (io: Server): void => {
         if (!roomsList.length) return
         const expiredRooms = roomsList.filter(room => room.expirationTime < Date.now())
         const expiredClientIds: string[] = expiredRooms.map(room => room.clientId)
+
+        if (!expiredClientIds.length) return
     
         Logger.debug(roomsList[0].expirationTime < Date.now())
         Logger.debug('expiration time', roomsList[0].expirationTime)

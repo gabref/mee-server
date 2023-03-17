@@ -26,6 +26,8 @@ export default (io: Server): void => {
 
         const expiredRooms = expiredBroadcasters.map(e => e.roomName)
 
+        if (!expiredRooms.length) return
+
         deleteSpecificRooms(expiredRooms)
 
         console.log('worker admin disconnect: expired Rooms', expiredRooms)
