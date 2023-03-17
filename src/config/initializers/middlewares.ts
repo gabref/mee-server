@@ -11,7 +11,10 @@ export default (app: Application): void => {
 
     /** Log the request */
     app.use((req, res, next) => {
-        if (req.url === '/') next()
+        if (req.url === '/') {
+            next()
+            return
+        }
 
         Logger.info(`METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`)
 
