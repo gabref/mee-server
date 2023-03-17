@@ -37,6 +37,7 @@ const Logger = pino({
     },
     timestamp: () => `,"time":"${dayjs().format()}"`,
 }, 
-pino.destination(logFile) )
+// pino.destination(logFile) 
+)
 
 export { Logger }
