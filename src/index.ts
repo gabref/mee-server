@@ -13,14 +13,14 @@ function main() {
     const server: Server = init(express())
 
     server.listen(port)
-    server.on('error', (err) => onError(err, server, initialAttempts, port))
+    // server.on('error', (err) => onError(err, server, initialAttempts, port))
     server.on('listening', () => onListening(server))
     // server.on('close', () => onClose())
 
-    process.on('uncaughtException', (err) => onProcessError(err, server))
-    process.on('unhandledRejection', (reason, promise) => onProcessRejection(reason, promise))
-    process.on('SIGINT', (signal) => gracefulShutdown(signal, server))
-    process.on('SIGTERM', (signal) => gracefulShutdown(signal, server))
+    // process.on('uncaughtException', (err) => onProcessError(err, server))
+    // process.on('unhandledRejection', (reason, promise) => onProcessRejection(reason, promise))
+    // process.on('SIGINT', (signal) => gracefulShutdown(signal, server))
+    // process.on('SIGTERM', (signal) => gracefulShutdown(signal, server))
 }
 
 main()
