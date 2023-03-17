@@ -7,6 +7,7 @@ import { getAllRooms } from "../../socket/handlers/utils"
 
 export default (io: Server): void => {
     Logger.debug('worker user room time out')
+    console.log('worker user room time out')
 
     try {
 
